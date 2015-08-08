@@ -9,8 +9,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -161,15 +163,17 @@ public class TestClient extends JFrame implements ActionListener {
                     btnConnection.setEnabled (false);
                     txtStatus.setText ("finding remote car ... ");
                     if (car == null) {
+                        car = fakeCar();
+                        /*
                         car = findCar ();
                         if (car == null) {
                             txtStatus.setText ("Can't find remote car.");
                             btnConnection.setEnabled (true);
 
                             return;
-                        }
+                        }*/
                     }
-                    socket = new Socket (car.getIp (), 18000);
+                    socket = new Socket (car.getIp (), car.getControlPort());
                     out = socket.getOutputStream ();
                     txtStatus.setText ("connected: " + car.getIp ().getHostAddress ());
                     setButtonStatus (true);
@@ -182,6 +186,14 @@ public class TestClient extends JFrame implements ActionListener {
 
     private RemoteCar findCar () throws IOException, InterruptedException {
         return RemoteCar.find (8001);
+    }
+
+    private RemoteCar fakeCar() throws UnknownHostException {
+        RemoteCar ret = new RemoteCar();
+        ret.setIp(InetAddress.getByName("192.168.18.242"));
+        ret.setControlPort(18000);
+        ret.setCameraPort(8002);
+        return ret;
     }
 
     @Override

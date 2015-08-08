@@ -103,7 +103,7 @@ public class VideoPanel extends Canvas implements Runnable {
         g.setFont (font);
         while (running) {
             try {
-                timestamp = System.nanoTime ();
+                timestamp = System.currentTimeMillis();
                 BufferedImage image = queue.take ();
                 if (image != null) {
                     synchronized (this) {
@@ -115,20 +115,19 @@ public class VideoPanel extends Canvas implements Runnable {
                     g.drawImage (image, 0, 0, null);
                     g.drawString ("fps: " + fps, 40, 40);
                 }
-/*
+
                 System.out.println (System.currentTimeMillis () - timestamp);
-                timestamp = System.currentTimeMillis ();
-*/
+/*
                 total = System.nanoTime () - timestamp;
                 if (total > fpsTime) continue;
                 d = total - fpsTime;
                 m = d / 1000;
                 n = d % 1000;
-                Thread.sleep (m, (int) n);
+                Thread.sleep (10);
 
                 while ((System.nanoTime () - timestamp) < fpsTime) {
                     System.nanoTime ();
-                }
+                }*/
             } catch (Exception ex) {
                 ex.printStackTrace ();
             }

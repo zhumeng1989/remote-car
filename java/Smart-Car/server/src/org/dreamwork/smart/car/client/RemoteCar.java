@@ -15,8 +15,6 @@ public class RemoteCar implements BroadcastListener {
 
     private static final Object locker = new Object ();
 
-    private RemoteCar () {}
-
     public static RemoteCar find (int udpPort) throws IOException, InterruptedException {
         List<InetAddress> list = getFirstNetworkInterface ();
         List<BroadcastCaller> futures = new ArrayList<BroadcastCaller> ();
@@ -110,12 +108,27 @@ public class RemoteCar implements BroadcastListener {
         return ip;
     }
 
+    public void setIp(InetAddress ip) {
+        this.ip = ip;
+        System.out.println ("set remote address: " + ip);
+    }
+
     public int getControlPort () {
         return controlPort;
     }
 
+    public void setControlPort(int controlPort) {
+        this.controlPort = controlPort;
+        System.out.println ("set control port: " + controlPort);
+    }
+
     public int getCameraPort () {
         return cameraPort;
+    }
+
+    public void setCameraPort(int cameraPort) {
+        this.cameraPort = cameraPort;
+        System.out.println ("set camera port: " + cameraPort);
     }
 
     private int byte2Int (byte[] buff) {

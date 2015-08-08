@@ -18,14 +18,6 @@ public class BlinkLED extends PausableThread {
         logger.debug ("blink led standby on " + pinIndex + "!");
     }
 
-    public boolean isBlinking () {
-        return !paused;
-    }
-
-    public void blink () {
-        proceed ();
-    }
-
     @Override
     protected void doWork () {
         try {

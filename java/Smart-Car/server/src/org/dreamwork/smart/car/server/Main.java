@@ -1,6 +1,5 @@
 package org.dreamwork.smart.car.server;
 
-import org.dreamwork.smart.car.server.io.BroadcastService;
 import org.dreamwork.smart.car.server.io.ProcessorFactory;
 import org.dreamwork.smart.car.server.io.Server;
 import org.dreamwork.smart.car.server.util.Config;
@@ -46,8 +45,8 @@ public class Main {
         Server server = new Server ("Smart Car Remote Control Server", tcpPort, factory);
         server.bind ();
 
-        BroadcastService service = new BroadcastService (udpPort);
-        service.bind ();
+        //BroadcastService service = new BroadcastService (udpPort);
+        //service.bind ();
 
         System.out.println ("All Service Started.");
     }

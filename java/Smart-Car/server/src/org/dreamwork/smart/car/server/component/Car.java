@@ -6,6 +6,7 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import org.apache.log4j.Logger;
 import org.dreamwork.smart.car.server.util.Config;
 import org.dreamwork.smart.car.server.util.GpioHelper;
+import org.dreamwork.smart.car.server.util.PausableThread;
 import org.dreamwork.smart.car.server.util.Rotate;
 
 import java.io.*;
@@ -22,7 +23,8 @@ public class Car implements ServoListener {
     private int dir = DIR_STOP;
     private Integer backup_dir = null;
     private Rotate rotate;
-    private BlinkLED leftLed, rightLed;
+    private BlinkLED leftLed;
+    private DimLED rightLed;
     private Servo servo0, servo1;
     private Motor left_front, /*left_back, */right_front/*, right_back*/;
     private Camera camera;
@@ -43,62 +45,59 @@ public class Car implements ServoListener {
         // led
         logger.debug ("init all LEDs !");
         leftLed = new BlinkLED (config.getIntValue (Config.BLINK_LEFT, BLINK_LEFT));
-        rightLed = new BlinkLED (config.getIntValue (Config.BLINK_RIGHT, BLINK_RIGHT));
+        rightLed = new DimLED (config.getIntValue (Config.BLINK_RIGHT, BLINK_RIGHT));
         led = GpioHelper.getDigitalOutputPin (config.getIntValue (Config.FRONT_LED, LED));
-
+/*
         // motors
         logger.debug ("init all motors!");
         int[] pins = config.getMotorPins (Config.MOTOR_LEFT_FRONT);
         left_front  = new Motor (pins [0],  pins [1],  new PWM (pins [2], 50));
         left_front.setSpeed (2);
 
-/*
+
         pins = config.getMotorPins (Config.MOTOR_LEFT_BACK);
         left_back   = new Motor (pins [0],  pins [1],  new PWM (pins [2], 50));
         left_back.setSpeed (2);
-*/
 
         pins = config.getMotorPins (Config.MOTOR_RIGHT_FRONT);
         right_front = new Motor (pins [0],  pins [1],  new PWM (pins [2], 50));
         right_front.setSpeed (2);
 
-/*
         pins = config.getMotorPins (Config.MOTOR_RIGHT_BACK);
         right_back  = new Motor (pins [0],  pins [1],  new PWM (pins [2], 50));
         right_back.setSpeed (2);
 */
-
         // camera
         camera = new Camera (config.getIntValue (Config.CAMERA_PORT, 8002));
-
+/*
         // servos
         rotate = new Rotate ();
 
         servo0 = new Servo (config.getIntValue (Config.SERVO_0, SERVO_0));
         servo0.addListener (this);
-//        servo0.set (0);
+        // servo0.set (0);
         servo1 = new Servo (config.getIntValue (Config.SERVO_1, SERVO_1), -45, 75);
         servo0.addListener (this);
-//        servo1.set (0);
+        // servo1.set (0);
+*/
 
         reset ();
 
         logger.debug ("init completed.");
-//        Thread.sleep (500);
     }
 
-    private void toggleBlinkLed (BlinkLED led) {
-        if (led.isBlinking ()) {
-            led.pause ();
+    private void toggleBlinkLed (PausableThread led) {
+        if (led.isPaused()) {
+            led.proceed();
         } else {
-            led.blink ();
+            led.pause ();
         }
     }
 
     public void reset () throws InterruptedException {
-        stop ();
+        stop ();/*
         servo0.reset ();
-        servo1.reset ();
+        servo1.reset ();*/
         camera.close ();
         logger.debug ("Car reset.");
     }
@@ -153,11 +152,11 @@ public class Car implements ServoListener {
     }
 
     public void toggleLeftBlink () {
-        toggleBlinkLed (leftLed);
+        toggleBlinkLed(leftLed);
     }
 
     public void toggleRightBlink () {
-        toggleBlinkLed (rightLed);
+        toggleBlinkLed(rightLed);
     }
 
     public void forward () throws InterruptedException {
@@ -185,10 +184,10 @@ public class Car implements ServoListener {
     }
 
     public void stop () throws InterruptedException {
-        left_pause ();
+        /*left_pause ();
         right_pause ();
         dir = DIR_STOP;
-        backup_dir = null;
+        backup_dir = null;*/
         leftLed.pause ();
         rightLed.pause ();
         Thread.sleep (50);
@@ -303,7 +302,7 @@ public class Car implements ServoListener {
             left_pause ();
             right_forward ();
         }
-        leftLed.blink ();
+        leftLed.proceed();
     }
 
     private void turnRight () throws InterruptedException {
@@ -318,7 +317,7 @@ public class Car implements ServoListener {
 //            right_backward ();
             right_pause ();
         }
-        rightLed.blink ();
+        rightLed.proceed();
     }
 
     public void setSpeed (int speed) {
