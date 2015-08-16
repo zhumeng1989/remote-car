@@ -190,7 +190,7 @@ public class TestClient extends JFrame implements ActionListener {
 
     private RemoteCar fakeCar() throws UnknownHostException {
         RemoteCar ret = new RemoteCar();
-        ret.setIp(InetAddress.getByName("192.168.18.242"));
+        ret.setIp(InetAddress.getByName("192.168.18.243"));
         ret.setControlPort(18000);
         ret.setCameraPort(8002);
         return ret;

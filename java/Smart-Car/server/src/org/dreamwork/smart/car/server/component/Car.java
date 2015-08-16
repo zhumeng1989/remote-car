@@ -47,14 +47,14 @@ public class Car implements ServoListener {
         leftLed = new BlinkLED (config.getIntValue (Config.BLINK_LEFT, BLINK_LEFT));
         rightLed = new DimLED (config.getIntValue (Config.BLINK_RIGHT, BLINK_RIGHT));
         led = GpioHelper.getDigitalOutputPin (config.getIntValue (Config.FRONT_LED, LED));
-/*
+
         // motors
         logger.debug ("init all motors!");
         int[] pins = config.getMotorPins (Config.MOTOR_LEFT_FRONT);
         left_front  = new Motor (pins [0],  pins [1],  new PWM (pins [2], 50));
         left_front.setSpeed (2);
 
-
+/*
         pins = config.getMotorPins (Config.MOTOR_LEFT_BACK);
         left_back   = new Motor (pins [0],  pins [1],  new PWM (pins [2], 50));
         left_back.setSpeed (2);
@@ -184,10 +184,10 @@ public class Car implements ServoListener {
     }
 
     public void stop () throws InterruptedException {
-        /*left_pause ();
-        right_pause ();
+        left_pause ();
+        /*right_pause ();*/
         dir = DIR_STOP;
-        backup_dir = null;*/
+        backup_dir = null;
         leftLed.pause ();
         rightLed.pause ();
         Thread.sleep (50);

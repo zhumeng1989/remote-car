@@ -1,0 +1,15 @@
+1. 使用Win32DiskImager烧录系统镜像到sd卡。
+2. 插入sd卡，接显示器启动raspberry pi，简单配置后连入wifi。
+3. 更新镜像源到清华 (/etc/apt/sources.list)，deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ wheezy main contrib non-free rpi，执行 sudo apt-get update
+4. sudo apt-get -y install vim lrzsz imagemagick subversion libv4l-dev libjpeg8-dev cmake
+5. 修改 ~/.bashrc 的alias，并source起效
+6. 安装 jdk for arm (解压时 sudo tar --no-same-owner -xvf 来避免uucp的用户组，sudo ln -s jdk1.7.0_60/ java 创建符号连接，修改 /etc/profile 添加java环境变量)
+7. 安装 mjpg-streamer (依赖之前安装imagemagick里面的convert命令)
+8. 
+
+
+sudo java -Djava.ext.dirs=lib -Dlog4j.configuration=file:"lib/log4j.properties" -cp dist/car.jar org.dreamwork.smart.car.server.Main server/src/car.cfg
+
+http://ozzmaker.com/i2c
+
+sudo less /etc/network/interfaces, sudo /etc/init.d/networking stop/start/restart, sudo less /etc/wpa_supplicant/wpa_supplicant.conf
